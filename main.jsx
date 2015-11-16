@@ -26,7 +26,7 @@ class Searcher extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='searcher'>
         <SearchField query={this.state.query}/>
         <SearchResults query={this.state.results}/>
       </div>
@@ -34,10 +34,28 @@ class Searcher extends React.Component {
   }
 }
 
+class Editor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    return (
+      <div className='editor'>
+        <SearchField query={this.state.query}/>
+        <SearchResults query={this.state.results}/>
+      </div>
+    )
+  }
+}
 class Main extends React.Component {
   render() {
     return (
-      <Searcher/>
+      <div>
+        <Searcher/>
+        <Editor/>
+      </div>
     )
   }
 }

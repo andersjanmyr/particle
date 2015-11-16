@@ -1,0 +1,14 @@
+body {
+
+}
+
+
+.searcher {
+  float: left;
+  width: 30%;
+}
+
+.editor {
+  float: right;
+  width: 60%;
+}
