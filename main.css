@@ -5,10 +5,14 @@ body {
 
 .searcher {
   float: left;
-  width: 30%;
+  width: 200px;
 }
 
 .editor {
   float: right;
-  width: 60%;
+  width: 70%;
+}
+
+.ingress {
+  font-weight: bold;
 }
