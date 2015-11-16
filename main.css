@@ -16,3 +16,15 @@ body {
 .ingress {
   font-weight: bold;
 }
+
+.puff {
+  margin: 10px;
+  padding: 10px;
+}
+
+
+
+.editable {
+  background: #ddd;
+  border: dashed #aaa 1px;
+}
