@@ -8,12 +8,37 @@ class SearchField extends React.Component {
   }
 }
 
+class Result extends React.Component {
+  constructor() {
+    super()
+    this.handleDragStart = (e) => e.target.style.opacity = '0.4';
+    this.handleDragEnd = (e) => e.target.style.opacity = '1';
+  }
+
+  componentDidMount() {
+    window.addEventListener('dragstart', this.handleDragStart);
+    window.addEventListener('dragend', this.handleDragEnd);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('dragstart', this.handleDragStart);
+    window.removeEventListener('dragend', this.handleDragEnd);
+  }
+
+  render() {
+    return (
+      <div draggable='true'>
+        RESULT {this.props.name}
+      </div>
+    );
+  }
+}
+
 class SearchResults extends React.Component {
   render() {
     return (
       <ul>
-        <li draggable='true'>Result 1</li>
-        <li draggable='true'>Result 1</li>
+        <Result name='1'/>
+        <Result name='2'/>
       </ul>
     );
   }
@@ -36,6 +61,20 @@ class Searcher extends React.Component {
 }
 
 class BasicArticlePuff extends React.Component {
+  constructor() {
+    super()
+    this.handleDragEnd = (e) => e.target.style.opacity = '1';
+  }
+
+  preventDefault(e) {
+    e.preventDefault();
+  }
+
+  handleDrop(e) {
+    e.preventDefault();
+    console.log('handleDrop', e);
+  }
+
   render() {
    var puffClass = classNames({
       'puff': true,
@@ -43,7 +82,7 @@ class BasicArticlePuff extends React.Component {
       'editable': this.props.editable
     });
     return (
-      <div className={puffClass}>
+      <div className={puffClass} onDragOver={this.preventDefault} onDrop={this.handleDrop}>
         <h1 className='title'>
           {this.props.article.title}
         </h1>
