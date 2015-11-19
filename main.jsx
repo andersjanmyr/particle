@@ -11,23 +11,19 @@ class SearchField extends React.Component {
 class Result extends React.Component {
   constructor() {
     super()
-    this.handleDragStart = (e) => e.target.style.opacity = '0.4';
+    this.handleDragStart = (e) => {
+      e.target.style.opacity = '0.4';
+      e.dataTransfer.effectAllowed = 'move';
+      console.log('dragStart', this.props.url);
+      e.dataTransfer.setData('text/plain', this.props.url);
+    }
     this.handleDragEnd = (e) => e.target.style.opacity = '1';
-  }
-
-  componentDidMount() {
-    window.addEventListener('dragstart', this.handleDragStart);
-    window.addEventListener('dragend', this.handleDragEnd);
-  }
-  componentWillUnmount() {
-    window.removeEventListener('dragstart', this.handleDragStart);
-    window.removeEventListener('dragend', this.handleDragEnd);
-  }
+   }
 
   render() {
     return (
-      <div draggable='true'>
-        RESULT {this.props.name}
+      <div draggable='true' onDragStart={this.handleDragStart} onDragEnd={this.handleDragEnd}>
+        RESULT {this.props.url}
       </div>
     );
   }
@@ -37,8 +33,8 @@ class SearchResults extends React.Component {
   render() {
     return (
       <ul>
-        <Result name='1'/>
-        <Result name='2'/>
+        <Result url='/articles/1'/>
+        <Result url='/articles/2'/>
       </ul>
     );
   }
