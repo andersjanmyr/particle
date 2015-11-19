@@ -60,9 +60,15 @@ class Searcher extends React.Component {
   }
 }
 
-class BasicArticlePuff extends React.Component {
-  constructor() {
+class Puff extends React.Component {
+  constructor(puffClass) {
     super()
+    let classes = {
+      'puff': true,
+      // editable: this.props.editable
+    }
+    classes[puffClass] = true;
+    this.classes = classNames(classes);
     this.handleDragEnd = (e) => e.target.style.opacity = '1';
   }
 
@@ -72,17 +78,21 @@ class BasicArticlePuff extends React.Component {
 
   handleDrop(e) {
     e.preventDefault();
-    console.log('handleDrop', e);
+    console.log('handleDrop', e, e.nativeEvent, e.dataTransfer);
+    console.log('dataTransfer', e.dataTransfer.files.length, e.dataTransfer.files[0]);
+    console.log('data', e.dataTransfer.getData('text/plain'));
+  }
+
+}
+
+class BasicArticlePuff extends Puff {
+  constructor() {
+    super('basic-article')
   }
 
   render() {
-   var puffClass = classNames({
-      'puff': true,
-      'basic-article': true,
-      'editable': this.props.editable
-    });
     return (
-      <div className={puffClass} onDragOver={this.preventDefault} onDrop={this.handleDrop}>
+      <div className={this.classes} onDragOver={this.preventDefault} onDrop={this.handleDrop}>
         <h1 className='title'>
           {this.props.article.title}
         </h1>
@@ -98,15 +108,14 @@ class BasicArticlePuff extends React.Component {
   }
 }
 
-class ShortArticlePuff extends React.Component {
+class ShortArticlePuff extends Puff {
+  constructor() {
+    super('short-article')
+  }
+
   render() {
-   var puffClass = classNames({
-      'puff': true,
-      'short-article': true,
-      'editable': this.props.editable
-    });
     return (
-      <div className={puffClass}>
+      <div className={this.classes}>
         <h1 className='title'>
           {this.props.article.title}
         </h1>
@@ -127,9 +136,9 @@ class Editor extends React.Component {
   render() {
     return (
       <div className='editor'>
-        {this.props.puffs.map(function(Puff, i) {
+        {this.props.puffs.map(function(puff, i) {
           console.log(i);
-          return React.createElement(Puff, {article: Data.getArticle(i), editable: true});
+          return React.createElement(puff, {article: Data.getArticle(i), editable: true});
         })}
       </div>
     )
