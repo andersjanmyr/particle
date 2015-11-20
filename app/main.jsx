@@ -63,7 +63,7 @@ class Searcher extends React.Component {
       query: '',
       articles: []
     };
-    this.onQuery = (query) => {
+    this.findArticle = (query) => {
       this.props.data.articles.then((articles) => {
         this.setState({
           query: query,
@@ -71,7 +71,10 @@ class Searcher extends React.Component {
         });
       })
     }
+    this.findArticle()
+    this.onQuery = this.findArticle
   }
+
 
 
   render() {
