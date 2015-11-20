@@ -28,3 +28,32 @@ body {
   background: #ddd;
   border: dashed #aaa 1px;
 }
+
+.search-results {
+  padding: 0;
+}
+
+.search-result {
+  border-top: 1px dashed gray;
+  padding-left: 0;
+  padding-top: 5px;
+  list-style-type: none;
+  width: 200px;
+}
+
+.search-result .title {
+  font-size: 16px;
+  margin: 0
+}
+
+.search-result .ingress {
+  font-size: 12px;
+  font-weight: normal;
+  font-style: italic;
+}
+
+.search-result img {
+  float: right;
+  width: 60px;
+}
+

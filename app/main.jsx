@@ -27,15 +27,15 @@ class Result extends React.Component {
 
   render() {
     return (
-      <div className='search-result' draggable='true' onDragStart={this.handleDragStart} onDragEnd={this.handleDragEnd}>
+      <li className='search-result' draggable='true' onDragStart={this.handleDragStart} onDragEnd={this.handleDragEnd}>
+        <img className='image' src={this.props.article.images[0]} />
         <h1 className='title'>
           {this.props.article.title}
         </h1>
         <p className='ingress'>
           {this.props.article.ingress}
         </p>
-        <img className='image' src={this.props.article.images[0]} />
-      </div>
+      </li>
     );
   }
 }
@@ -47,7 +47,7 @@ class SearchResults extends React.Component {
 
   render() {
     return (
-      <ul>
+      <ul className='search-results'>
         {this.props.articles.map(function(article) {
             return <Result article={article}/>
           })}
