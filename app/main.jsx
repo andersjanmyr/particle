@@ -110,7 +110,11 @@ class Puff extends React.Component {
     e.preventDefault();
     console.log('handleDrop', e, e.nativeEvent, e.dataTransfer);
     console.log('dataTransfer', e.dataTransfer.files.length, e.dataTransfer.files[0]);
-    console.log('data', e.dataTransfer.getData('text/plain'));
+    let url = e.dataTransfer.getData('text/plain');
+    console.log('url', url);
+    $.get(url).then((data) => {
+      console.log(data.length, data);
+    })
   }
 
 }
