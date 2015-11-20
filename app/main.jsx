@@ -4,8 +4,12 @@ var classNames = require('classnames');
 var $ = require('jquery');
 
 class SearchField extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
-    return <input value={this.props.query}/>;
+    return <input onKeyUp={this.props.onQuery}/>;
   }
 }
 
@@ -15,27 +19,38 @@ class Result extends React.Component {
     this.handleDragStart = (e) => {
       e.target.style.opacity = '0.4';
       e.dataTransfer.effectAllowed = 'move';
-      console.log('dragStart', this.props.url);
-      e.dataTransfer.setData('text/plain', this.props.url);
+      console.log('dragStart', this.props.article.url);
+      e.dataTransfer.setData('text/plain', this.props.article.url);
     }
     this.handleDragEnd = (e) => e.target.style.opacity = '1';
    }
 
   render() {
     return (
-      <div draggable='true' onDragStart={this.handleDragStart} onDragEnd={this.handleDragEnd}>
-        RESULT {this.props.url}
+      <div className='search-result' draggable='true' onDragStart={this.handleDragStart} onDragEnd={this.handleDragEnd}>
+        <h1 className='title'>
+          {this.props.article.title}
+        </h1>
+        <p className='ingress'>
+          {this.props.article.ingress}
+        </p>
+        <img className='image' src={this.props.article.images[0]} />
       </div>
     );
   }
 }
 
 class SearchResults extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <ul>
-        <Result url='/articles/1'/>
-        <Result url='/articles/2'/>
+        {this.props.articles.map(function(article) {
+            return <Result article={article}/>
+          })}
       </ul>
     );
   }
@@ -44,14 +59,26 @@ class SearchResults extends React.Component {
 class Searcher extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      query: '',
+      articles: []
+    };
+    this.onQuery = (query) => {
+      this.props.data.articles.then((articles) => {
+        this.setState({
+          query: query,
+          articles: articles
+        });
+      })
+    }
   }
+
 
   render() {
     return (
       <div className='searcher'>
-        <SearchField query={this.state.query}/>
-        <SearchResults query={this.state.results}/>
+        <SearchField onQuery={this.onQuery}/>
+        <SearchResults articles={this.state.articles}/>
       </div>
     )
   }
@@ -152,7 +179,6 @@ class Editor extends React.Component {
     return (
       <div className='editor'>
         {this.props.puffs.map(function(puff, i) {
-          console.log(i);
           return React.createElement(puff, {article: this.getArticle(i), editable: true});
         }, this)}
       </div>
@@ -180,7 +206,7 @@ class Main extends React.Component {
 
     return (
       <div>
-        <Searcher/>
+        <Searcher data={this.props.data}/>
         <Editor puffs={this.state.puffs} articles={this.state.articles}/>
       </div>
     )
