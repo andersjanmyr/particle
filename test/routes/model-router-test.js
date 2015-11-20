@@ -5,8 +5,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var modelRouter = require('../../lib/routes/model-router');
-var Samples = require('../../lib/models/samples.js');
-var model = new Samples();
+var ArticleRepo = require('../../lib/models/article-repo.js');
+var model = new ArticleRepo();
 
 var app = express();
 app.use(bodyParser.json());
