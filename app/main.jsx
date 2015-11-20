@@ -123,10 +123,28 @@ class ShortArticlePuff extends Puff {
   }
 }
 
+let placeholder = {
+  title: 'Placeholder',
+  ingress: 'placeholder',
+  text: `
+  placeholder
+  `,
+  images: [
+    'images/placeholder.png',
+    'images/placeholder.png',
+    'images/placeholder.png'
+  ]
+}
+
+
 class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  getArticle(i) {
+    return this.props.articles[i] || placeholder;
   }
 
   render() {
@@ -134,8 +152,8 @@ class Editor extends React.Component {
       <div className='editor'>
         {this.props.puffs.map(function(puff, i) {
           console.log(i);
-          return React.createElement(puff, {article: Data.getArticle(i), editable: true});
-        })}
+          return React.createElement(puff, {article: this.getArticle(i), editable: true});
+        }, this)}
       </div>
     )
   }
@@ -144,18 +162,11 @@ class Editor extends React.Component {
 
 class Main extends React.Component {
   render() {
-    let puffs = [
-      ShortArticlePuff,
-      BasicArticlePuff,
-      ShortArticlePuff,
-      BasicArticlePuff,
-      BasicArticlePuff
-    ];
 
     return (
       <div>
         <Searcher/>
-        <Editor puffs={puffs}/>
+        <Editor puffs={puffs} articles={this.props.articles}/>
       </div>
     )
   }
@@ -174,30 +185,21 @@ let article = {
   ]
 };
 
-let placeholder = {
-  title: 'Placeholder',
-  ingress: 'placeholder',
-  text: `
-  placeholder
-  `,
-  images: [
-    'images/placeholder.png',
-    'images/placeholder.png',
-    'images/placeholder.png'
-  ]
-}
-
 let Data = {
   articles: [article, article, article, article],
 
-  getArticle: function(i) {
-    return this.articles[i] || placeholder;
-  }
 };
 
+let puffs = [
+  ShortArticlePuff,
+  BasicArticlePuff,
+  ShortArticlePuff,
+  BasicArticlePuff,
+  BasicArticlePuff
+];
 
 ReactDOM.render(
-  <Main/>,
+  <Main puffs={puffs} articles={Data.articles}/>,
   document.getElementById('example')
 );
 
