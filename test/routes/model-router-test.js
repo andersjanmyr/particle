@@ -16,10 +16,10 @@ describe('modelRouter', function() {
     before(function() {
         model.reset();
     });
-    describe('GET /models?filter=fooled', function() {
+    describe('GET /models?filter=sloth', function() {
         it('responds with matching models', function(done) {
             request(app)
-            .get('/models?filter=fooled')
+            .get('/models?filter=sloth')
             .end(function(err, res){
                 if (err) throw err;
                 expect(res.get('content-type')).to.match(/json/);
@@ -30,14 +30,14 @@ describe('modelRouter', function() {
         });
     });
 
-    describe('GET /models/geb', function() {
+    describe('GET /models/tapirs-are-cool', function() {
         it('responds with matching model', function(done) {
             request(app)
-            .get('/models/geb')
+            .get('/models/tapirs-are-cool')
             .end(function(err, res){
                 if (err) throw err;
                 expect(res.get('content-type')).to.match(/json/);
-                expect(res.body.title).to.match(/Gödel/);
+                expect(res.body.title).to.match(/Tapirs/);
                 done();
             });
         });
@@ -47,20 +47,20 @@ describe('modelRouter', function() {
         it('adds the new model', function(done) {
             request(app)
             .post('/models')
-            .send({author: 'fake', title: 'Fakemodel swims!'})
+            .send({title: 'Giraff swims!'})
             .end(function(err, res){
                 if (err) throw err;
                 expect(res.get('content-type')).to.match(/json/);
-                expect(res.body).to.equal('fas');
+                expect(res.body).to.equal('giraff-swims');
                 done();
             });
         });
     });
 
-    describe('PUT /models/fbr', function() {
+    describe('PUT /models/tapirs-are-cool', function() {
         it('responds with matching model', function(done) {
             request(app)
-            .put('/models/fbr')
+            .put('/models/tapirs-are-cool')
             .send({title: 'Fakemodel rocks!'})
             .end(function(err, res){
                 if (err) throw err;
@@ -71,10 +71,10 @@ describe('modelRouter', function() {
         });
     });
 
-    describe('DELETE /models/fbr', function() {
+    describe('DELETE /models/tapirs-are-cool', function() {
         it('responds with matching model', function(done) {
             request(app)
-            .delete('/models/fbr')
+            .delete('/models/tapirs-are-cool')
             .end(function(err, res){
                 if (err) throw err;
                 expect(res.get('content-type')).to.match(/json/);
