@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var classNames = require('classnames');
+var $ = require('jquery');
 
 class SearchField extends React.Component {
   render() {
@@ -161,45 +162,45 @@ class Editor extends React.Component {
 
 
 class Main extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      puffs: props.data.puffs,
+      articles: []
+    }
+
+    this.props.data.articles.then((articles) => {
+      this.setState({
+        articles: articles
+      });
+    })
+  }
+
   render() {
 
     return (
       <div>
         <Searcher/>
-        <Editor puffs={puffs} articles={this.props.articles}/>
+        <Editor puffs={this.state.puffs} articles={this.state.articles}/>
       </div>
     )
   }
 }
 
-let article = {
-  title: 'Tapirs are cool!',
-  ingress: 'Tapis have been voted the coolest animal in history',
-  text: `
-  A tapir (/ˈteɪpər/ tay-pər or /təˈpɪər/ tə-peer) is a large, herbivorous mammal, similar in shape to a pig, with a short, prehensile snout. Tapirs inhabit jungle and forest regions of South America, Central America, and Southeastern Asia. The five extant species of tapirs are the Brazilian tapir, the Malayan tapir, the Baird's tapir, the kabomani tapir, and the mountain tapir. The four species that have been evaluated (the Brazilian, Malayan, Baird's and mountain tapir) are all classified as endangered or vulnerable. Their closest relatives are the other odd-toed ungulates, which include horses, donkeys, zebras and rhinoceri.
-  `,
-  images: [
-    'https://upload.wikimedia.org/wikipedia/commons/a/a1/Malayan_Tapir_Sitting.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/TapirAtSDZ.jpg/440px-TapirAtSDZ.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/2/24/Tapirbaby.jpg'
+let Data = {
+  articles: $.get('/api/articles'),
+  puffs: [
+    ShortArticlePuff,
+    BasicArticlePuff,
+    ShortArticlePuff,
+    BasicArticlePuff,
+    BasicArticlePuff
   ]
 };
 
-let Data = {
-  articles: [article, article, article, article],
-
-};
-
-let puffs = [
-  ShortArticlePuff,
-  BasicArticlePuff,
-  ShortArticlePuff,
-  BasicArticlePuff,
-  BasicArticlePuff
-];
 
 ReactDOM.render(
-  <Main puffs={puffs} articles={Data.articles}/>,
+  <Main data={Data}/>,
   document.getElementById('example')
 );
 
