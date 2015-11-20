@@ -6,10 +6,13 @@ var $ = require('jquery');
 class SearchField extends React.Component {
   constructor(props) {
     super(props);
+    this.handleQuery = (e) => {
+      this.props.onQuery(e.target.value);
+    }
   }
 
   render() {
-    return <input onKeyUp={this.props.onQuery}/>;
+    return <input onChange={this.handleQuery}/>;
   }
 }
 
@@ -63,10 +66,10 @@ class Searcher extends React.Component {
       query: '',
       articles: []
     };
-    this.findArticle = (query) => {
-      this.props.data.articles.then((articles) => {
+    this.findArticle = (filter) => {
+      this.props.data.articles.find(filter).then((articles) => {
         this.setState({
-          query: query,
+          query: filter,
           articles: articles
         });
       })
@@ -198,7 +201,7 @@ class Main extends React.Component {
       articles: []
     }
 
-    this.props.data.articles.then((articles) => {
+    this.props.data.articles.find().then((articles) => {
       this.setState({
         articles: articles
       });
@@ -216,8 +219,19 @@ class Main extends React.Component {
   }
 }
 
+class Rest {
+  constructor(baseUrl) {
+    this.baseUrl = baseUrl;
+  }
+
+  find(filter) {
+    if (!filter) filter=''
+    return $.get(`${this.baseUrl}?filter=${filter}`)
+  }
+}
+
 let Data = {
-  articles: $.get('/api/articles'),
+  articles: new Rest('/api/articles'),
   puffs: [
     ShortArticlePuff,
     BasicArticlePuff,
